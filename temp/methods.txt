@@ -1,0 +1,79 @@
+
+
+def PageCount():
+    """Summary
+    It allows us to reach the page number of the file.
+    Returns:
+        int: Number of pages in file
+    """
+    return len(data["document"]["body"]["drawing"]["page"])
+
+
+def PageLayout():
+    """Summary
+    Contains page properties in the dictionary data type.
+    Returns:
+        dict: Includes page properties.
+    """
+
+    return data["document"]["automatic-styles"]["page-layout"]["page-layout-properties"]
+
+
+def PageLayoutProperties(propertiesName):
+    """Summary
+    Write the name of the margin for which margin is desired.
+    If you get a value of -1, it means you did not enter the correct margin name.
+    The names of the margins: `top, `bottom`, `left`, `right`
+    Args:
+        propertiesName (string): Margin desired
+    Returns:
+        float: value in cm
+    """
+    if propertiesName == "top":
+        return float(PageLayout()['_fo:margin-top'].split('c')[0])
+    elif propertiesName == "bottom":
+        return float(PageLayout()['_fo:margin-bottom'].split('c')[0])
+    elif propertiesName == "left":
+        return float(PageLayout()['_fo:margin-left'].split('c')[0])
+    elif propertiesName == "right":
+        return float(PageLayout()['_fo:margin-right'].split('c')[0])
+    else:
+        return -1
+
+
+def GetPageNumberName(pageNumber):
+    if (0 <= pageNumber) and (pageNumber <= PageCount()):
+        return data["document"]["body"]["drawing"]["page"][pageNumber]["_draw:name"]
+    else:
+        return -1
+
+
+def GetAllPageNumberName():
+    arr = []
+    for i in range(PageCount()):
+        arr.append(GetPageNumberName(i))
+    return arr
+
+
+"""
+# print(GetAllPageNumberName())
+
+# print(data["document"]["body"]["drawing"]["page"][0])
+# 0. sayfanın numarası
+PageNumber = data["document"]["body"]["drawing"]["page"][0]["_draw:name"]
+# font size
+FontSize = data["document"]["body"]["drawing"]["page"][0]["frame"][0]["_svg:height"]
+# 0. Sayfada kaç tane elaman var
+FrameElementCount = len(data["document"]["body"]
+                        ["drawing"]["page"][0]["frame"])
+# 0. Sayfadaki her metin için frame[number] değerini değiştir.FontInformation = data["document"]["body"]["drawing"]["page"][0]["frame"][1]
+
+# 0. sayfadaki 0. veri
+veri = data["document"]["body"]["drawing"]["page"][0]["frame"][0]["text-box"]["p"]["span"]["__text"]
+
+# . print(veri)
+
+# print(frameElementCount)
+
+#DataSave(veri, "deneme")
+"""
